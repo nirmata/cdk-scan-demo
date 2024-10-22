@@ -11,7 +11,7 @@
       "source.bat",
       "**/__init__.py",
       "**/__pycache__",
-      "testssss"
+      "testsss"
     ]
   },
   "context": {
