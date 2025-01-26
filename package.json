@@ -1,18 +1,11 @@
 {
     "name": "cdk-scan-demo",
     "version": "1.0.0",
-    "description": "CDK ECS Deployment",
-    "main": "bin/cdk-stack.js",
+    "description": "This is a demo repository to scan CloudFormation templates. The scanned results can be viewed via the Nirmata Policy Manager.",
+    "main": "index.js",
     "scripts": {
-        "build": "tsc",
-        "synth": "cdk synth"
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "dependencies": {
-        "aws-cdk-lib": "^2.x.x",
-        "constructs": "^10.x.x"
-    },
-    "devDependencies": {
-        "typescript": "^4.x.x",
-        "@types/node": "^18.x.x"
-    }
+    "author": "",
+    "license": "ISC"
 }
