@@ -25,4 +25,4 @@ spec:
                 Properties:
                     ~.(ContainerDefinitions[]):
                         (LogConfiguration.Options):                   
-                          awslogs-region : "us-west-1"
+                          awslogs-region: "us-west-1"
