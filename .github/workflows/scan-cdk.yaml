@@ -24,9 +24,9 @@ jobs:
       - name: NCTL-scan-installer
         uses: supplypike/setup-bin@v4
         with:
-          uri: 'https://nirmata-downloads.s3.us-east-2.amazonaws.com/nctl/nctl_4.3.4/nctl_4.3.4-rc.1_linux_386.zip'
+          uri: 'https://nirmata-downloads.s3.us-east-2.amazonaws.com/nctl/nctl_4.3.5/nctl_4.3.5_linux_386.zip'
           name: 'nctl'
-          version: '4.3.4'
+          version: '4.3.5'
 
       - name: Check nctl version
         run: |
@@ -54,16 +54,11 @@ jobs:
 
       - name: CDK Synth
         run: |
-          git clone https://github.com/nirmata/cdk-code.git
           cd sample-cdk
           cdk synth --json 
 
-     # - name: nctl login
-     #   run: nctl login --url $NIRMATA_URL --userid anusha.hegde@nirmata.com --token $NIRMATA_TOKEN
-        
-      - name: file-o/p
-        run: |
-          cat sample-cdk/cdk.out/MyEcsStack.template.json
+      - name: nctl login
+        run: nctl login --url $NIRMATA_URL --userid anusha.hegde@nirmata.com --token $NIRMATA_TOKEN
           
       - name: NCTL Scan Repository for CDK
         run: |
