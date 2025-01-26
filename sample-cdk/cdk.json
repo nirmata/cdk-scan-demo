@@ -1,0 +1,6 @@
+{
+    "app": "python3 src/ecs_stack.py",
+    "context": {
+        "environment": "development"
+    }
+}
