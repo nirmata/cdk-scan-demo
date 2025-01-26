@@ -24,7 +24,7 @@ class MyEcsStack(Stack):
             image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample"),
             environment={
                 "READ_ONLY_ROOT_FILESYSTEM": "true"
-            }
+            },
             logging=ecs.LogDriver.aws_logs(stream_prefix="MyApp")
         )
 
