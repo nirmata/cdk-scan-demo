@@ -5,7 +5,7 @@ metadata:
   labels:
     app: kyverno
   annotations:
-    policies.kyverno.io/category: CDK Regional Policies for ECS
+    policies.kyverno.io/category: CDK Best Practices for ECS
     policies.kyverno.io/severity: medium
     policies.kyverno.io/description: >-
       When managing containers within AWS ECS, it's crucial to enforce security measures to prevent unauthorized modifications.
