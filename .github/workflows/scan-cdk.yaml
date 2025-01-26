@@ -18,8 +18,13 @@ jobs:
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
 
-      - name: Check out main repository code
-        uses: actions/checkout@v4
+      - name: Checkout PR branch
+        uses: actions/checkout@v3
+        with:
+          # Checks out the repository linked to the PR
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          # Checks out the branch from the PR
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: NCTL-scan-installer
         uses: supplypike/setup-bin@v4
@@ -45,16 +50,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install CDK
+      - name: Install Python dependencies and CDK
         run: |
+          python -m pip install --upgrade pip
+          cd sample-cdk
+          pip install -r requirements.txt
           npm install -g aws-cdk
-          
 
       - name: CDK Synth
         run: |
           cd sample-cdk
-          cdk synth > cdk-output.json
-          cat cdk-output.json
+          cdk synth --json
 
       - name: nctl login
         run: nctl login --url $NIRMATA_URL --userid anusha.hegde@nirmata.com --token $NIRMATA_TOKEN
