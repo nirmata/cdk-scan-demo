@@ -22,6 +22,7 @@ class MyEcsStack(Stack):
         container = task_definition.add_container(
             "MyContainer",
             image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample"),
+            read_only_root_filesystem=True,
             logging=ecs.LogDriver.aws_logs(stream_prefix="MyApp")
         )
 
