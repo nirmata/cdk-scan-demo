@@ -2,16 +2,25 @@ from aws_cdk import (
     Stack,
     aws_ecs as ecs,
     aws_ec2 as ec2,
-    aws_ecs_patterns as ecs_patterns,
-    core
+    aws_ecr as ecr,
+    RemovalPolicy
 )
+from constructs import Construct
 
-class ECSFargateStack(Stack):
-    def __init__(self, scope: core.Construct, id: str, **kwargs):
-        super().__init__(scope, id, **kwargs)
+class EcsStack(Stack):
+    def __init__(self, scope: Construct, construct_id: str, **kwargs):
+        super().__init__(scope, construct_id, **kwargs)
 
         # Create VPC
-        vpc = ec2.Vpc(self, "MyVPC", max_azs=2)
+        vpc = ec2.Vpc(self, "MyVpc", max_azs=2)
+
+        # Create ECR Repository
+        repository = ecr.Repository(
+            self, 
+            "MyRepository",
+            repository_name="my-app-repo",
+            removal_policy=RemovalPolicy.DESTROY
+        )
 
         # Create ECS Cluster
         cluster = ecs.Cluster(
@@ -20,31 +29,26 @@ class ECSFargateStack(Stack):
             vpc=vpc
         )
 
-        # Define task definition
+        # Create Task Definition
         task_definition = ecs.FargateTaskDefinition(
             self, 
             "MyTaskDefinition",
-            memory_limit_mib=2048,
-            cpu=1024
+            memory_limit_mib=512,
+            cpu=256
         )
 
         # Add container to task definition
         task_definition.add_container(
-            "AppContainer",
-            image=ecs.ContainerImage.from_registry("nginx:latest"),
+            "MyContainer",
+            image=ecs.ContainerImage.from_ecr_repository(repository),
             port_mappings=[ecs.PortMapping(container_port=80)]
         )
 
-        # Create Fargate service with load balancer
-        ecs_patterns.ApplicationLoadBalancedFargateService(
+        # Create Fargate Service
+        ecs.FargateService(
             self, 
-            "MyFargateService",
+            "MyService",
             cluster=cluster,
             task_definition=task_definition,
-            desired_count=2,
-            public_load_balancer=True
+            desired_count=2
         )
-
-app = core.App()
-ECSFargateStack(app, "ECSDeploymentStack")
-app.synth()
