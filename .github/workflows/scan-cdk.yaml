@@ -11,9 +11,6 @@ on:
 env:
   NIRMATA_TOKEN: ${{ secrets.NIRMATA_TOKEN }}
   NIRMATA_URL: ${{ secrets.NIRMATA_URL }}
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 
 jobs:
   NCTL-Scan-CDK:
