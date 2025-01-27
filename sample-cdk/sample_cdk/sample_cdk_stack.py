@@ -23,7 +23,7 @@ class MyEcsStack(Stack):
             "MyContainer",
             image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample"),
             logging=ecs.LogDriver.aws_logs(stream_prefix="MyApp"),
-            readonly_root_filesystem=True
+            readonly_root_filesystem=False
         )
 
         # Optionally, add port mappings now
