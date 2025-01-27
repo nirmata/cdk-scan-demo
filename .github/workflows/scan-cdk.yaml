@@ -72,11 +72,12 @@ jobs:
           repository: nirmata/demo-policies
 
       - name: nctl login
-        run: nctl login --url $NIRMATA_URL --userid anusha.hegde@nirmata.com --token $NIRMATA_TOKEN
+        run: nctl login nch --url $NIRMATA_URL --userid anusha.hegde@nirmata.com --token $NIRMATA_TOKEN
           
       - name: NCTL Scan Repository for CDK
         run: |
+          cd demo-cdk-scan
           cat sample-cdk/cdk.out/MyEcsStack.template.json
-          nctl scan json -r sample-cdk/cdk.out/MyEcsStack.template.json --policies demo-policies/cdk-policies/best-practices --details --publish
+          nctl scan json -r sample-cdk/cdk.out/MyEcsStack.template.json --policies ../demo-policies/cdk-policies/best-practices --details --publish
   
       - run: echo "🍏 This job's status is ${{ job.status }}."
