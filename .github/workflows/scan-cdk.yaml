@@ -79,6 +79,7 @@ jobs:
           pwd
           ls /home/runner/work
           ls
-          nctl scan json -r sample-cdk/cdk.out/MyEcsStack.template.json --policies demo-policies/cdk-policies/best-practices --details --publish
+          cd demo-cdk-scan
+          nctl scan json -r sample-cdk/cdk.out/MyEcsStack.template.json --policies ../cdk-policies/best-practices --details --publish
   
       - run: echo "🍏 This job's status is ${{ job.status }}."
