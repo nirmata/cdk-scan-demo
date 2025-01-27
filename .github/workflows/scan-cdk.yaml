@@ -11,6 +11,9 @@ on:
 env:
   NIRMATA_TOKEN: ${{ secrets.NIRMATA_TOKEN }}
   NIRMATA_URL: ${{ secrets.NIRMATA_URL }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 
 jobs:
   NCTL-Scan-CDK:
@@ -18,8 +21,18 @@ jobs:
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
 
-      - name: Check out main repository code
-        uses: actions/checkout@v4
+      - name: Checkout PR branch
+        uses: actions/checkout@v3
+        with:
+          # Checks out the repository linked to the PR
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          # Checks out the branch from the PR
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Checkout policies repo
+        uses: actions/checkout@v3
+        with:
+          repository: nirmata/demo-policies
 
       - name: NCTL-scan-installer
         uses: supplypike/setup-bin@v4
@@ -50,18 +63,22 @@ jobs:
           python -m pip install --upgrade pip
           cd sample-cdk
           pip install -r requirements.txt
-          
+          npm install -g aws-cdk
+
+      # - name: CDK Bootstrap
+      #   run: cdk bootstrap
 
       - name: CDK Synth
         run: |
           cd sample-cdk
-          cdk synth --json 
+          cdk synth --json
 
       - name: nctl login
         run: nctl login --url $NIRMATA_URL --userid anusha.hegde@nirmata.com --token $NIRMATA_TOKEN
           
       - name: NCTL Scan Repository for CDK
         run: |
-          nctl scan json -r sample-cdk/cdk.out/MyEcsStack.template.json --policies policies/ --details --publish
+          cat sample-cdk/cdk.out/MyEcsStack.template.json
+          nctl scan json -r sample-cdk/cdk.out/MyEcsStack.template.json --policies demo-policies/cdk-policies/best-practices --details --publish
   
       - run: echo "🍏 This job's status is ${{ job.status }}."
