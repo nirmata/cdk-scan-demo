@@ -22,10 +22,8 @@ class MyEcsStack(Stack):
         container = task_definition.add_container(
             "MyContainer",
             image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample"),
-            environment={
-                "READ_ONLY_ROOT_FILESYSTEM": "true"
-            },
-            logging=ecs.LogDriver.aws_logs(stream_prefix="MyApp")
+            logging=ecs.LogDriver.aws_logs(stream_prefix="MyApp"),
+            readonly_root_filesystem=True
         )
 
         # Optionally, add port mappings now
@@ -34,3 +32,4 @@ class MyEcsStack(Stack):
                 container_port=80
             )
         )
+
