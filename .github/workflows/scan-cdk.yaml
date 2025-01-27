@@ -29,6 +29,11 @@ jobs:
           # Checks out the branch from the PR
           ref: ${{ github.event.pull_request.head.ref }}
 
+      - name: Checkout policies repo
+        uses: actions/checkout@v3
+        with:
+          repository: nirmata/demo-policies
+
       - name: NCTL-scan-installer
         uses: supplypike/setup-bin@v4
         with:
@@ -74,6 +79,6 @@ jobs:
       - name: NCTL Scan Repository for CDK
         run: |
           cat sample-cdk/cdk.out/MyEcsStack.template.json
-          nctl scan json -r sample-cdk/cdk.out/MyEcsStack.template.json --policies policies/ --details --publish
+          nctl scan json -r sample-cdk/cdk.out/MyEcsStack.template.json --policies demo-policies/cdk-policies/best-practices --details --publish
   
       - run: echo "🍏 This job's status is ${{ job.status }}."
