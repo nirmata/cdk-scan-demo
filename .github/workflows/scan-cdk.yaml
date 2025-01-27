@@ -29,11 +29,6 @@ jobs:
           # Checks out the branch from the PR
           ref: ${{ github.event.pull_request.head.ref }}
 
-      - name: Checkout policies repo
-        uses: actions/checkout@v3
-        with:
-          repository: nirmata/demo-policies
-
       - name: NCTL-scan-installer
         uses: supplypike/setup-bin@v4
         with:
@@ -57,8 +52,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pwd
-          ls
           npm install
 
       - name: Install Python dependencies and CDK
@@ -72,6 +65,11 @@ jobs:
         run: |
           cd sample-cdk
           cdk synth --json
+
+      - name: Checkout policies repo
+        uses: actions/checkout@v3
+        with:
+          repository: nirmata/demo-policies
 
       - name: nctl login
         run: nctl login --url $NIRMATA_URL --userid anusha.hegde@nirmata.com --token $NIRMATA_TOKEN
