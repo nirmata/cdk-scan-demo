@@ -77,7 +77,7 @@ jobs:
       - name: NCTL Scan Repository for CDK
         run: |
           pwd
-          ls ../
+          ls -R ../
           
           nctl scan json -r ../demo-cdk-scan/sample-cdk/cdk.out/MyEcsStack.template.json --policies cdk-policies/best-practices --details --publish
   
