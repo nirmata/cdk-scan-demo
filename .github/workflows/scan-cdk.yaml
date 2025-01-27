@@ -21,11 +21,6 @@ jobs:
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
 
-      - name: Checkout policies repo
-        uses: actions/checkout@v3
-        with:
-          repository: nirmata/demo-policies
-
       - name: Checkout PR branch
         uses: actions/checkout@v3
         with:
@@ -33,6 +28,10 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           # Checks out the branch from the PR
           ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Clone policies repository
+        run: |
+          git clone https://github.com/nirmata/demo-policies.git
 
       - name: NCTL-scan-installer
         uses: supplypike/setup-bin@v4
@@ -76,9 +75,6 @@ jobs:
           
       - name: NCTL Scan Repository for CDK
         run: |
-          pwd
-          ls -R ../
-          
-          nctl scan json -r ../demo-cdk-scan/sample-cdk/cdk.out/MyEcsStack.template.json --policies cdk-policies/best-practices --details --publish
+          nctl scan json -r sample-cdk/cdk.out/MyEcsStack.template.json --policies demo-policies/cdk-policies/best-practices --details --publish
   
       - run: echo "🍏 This job's status is ${{ job.status }}."
