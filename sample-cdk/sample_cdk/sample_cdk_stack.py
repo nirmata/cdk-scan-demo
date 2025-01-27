@@ -21,7 +21,7 @@ class MyEcsStack(Stack):
         # Add a container to the task definition
         container = task_definition.add_container(
             "MyContainer",
-            image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample"),
+            image=ecs.ContainerImage.from_registry("ecr.io/amazon/amazon-ecs-sample"),
             logging=ecs.LogDriver.aws_logs(stream_prefix="MyApp"),
             readonly_root_filesystem=True
         )
